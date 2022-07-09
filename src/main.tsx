@@ -9,7 +9,6 @@ const getDescriptionElement = () => {
   const nodeLists = document.querySelectorAll(className);
 
   if (nodeLists.length > 0) {
-    console.log(nodeLists[0]);
     return nodeLists[0];
   }
 };
@@ -24,7 +23,6 @@ const observeTitleTag = (callback: Function) => {
 
   const observeCallback = (records: MutationRecord[]) => {
     records.forEach((r) => {
-      console.log(r.type);
       if (r.type === "childList") {
         callback();
       }
@@ -40,10 +38,8 @@ const main = () => {
     if (!title || !isUserProfileTitle(title)) {
       return;
     }
-    console.log("突破", title);
 
     const descriptionElm = getDescriptionElement();
-    console.log("await", descriptionElm);
     if (!descriptionElm) {
       console.error("not found user profile area.");
       return;
