@@ -1,3 +1,5 @@
+import { useMutationObserver } from "./lib/useMutationObserver";
+
 console.log("on twitter");
 
 const getDescriptionElement = () => {
@@ -10,38 +12,9 @@ const getDescriptionElement = () => {
   }
 };
 
-// TODO: 実行時に要素がなかったりするからこうしてるけど body を監視した方がいいかも
-const cronGetElement = (): Promise<Element | undefined> =>
-  new Promise((resolve) => {
-    const intervalId = setInterval(() => {
-      const descriptionElm = getDescriptionElement();
-
-      if (descriptionElm) {
-        console.log("find!");
-        resolve(descriptionElm);
-        clearInterval(intervalId);
-      }
-    }, 1000);
-  });
-
 const isUserProfileTitle = (title: string) => {
-  const regexp = /.*[\(\uFF08]+@\w*[\)\uFF09].*/; // ユーザープロフィールページかどうか
+  const regexp = /.*[\(\uFF08]+@\w*[\)\uFF09].*/;
   return regexp.test(title);
-};
-
-const useMutationObserver = (
-  targetElm: Element,
-  callback: (records: MutationRecord[], observer: MutationObserver) => void,
-  config?: MutationObserverInit
-) => {
-  const observer = new MutationObserver(callback);
-
-  const defaultConfig = {
-    childList: true,
-    attributes: true,
-  };
-
-  observer.observe(targetElm, { ...defaultConfig, ...config });
 };
 
 const observeTitleTag = (callback: Function) => {
@@ -59,15 +32,15 @@ const observeTitleTag = (callback: Function) => {
   useMutationObserver(titleTag, observeCallback);
 };
 
-const main = async () => {
-  const cb = async () => {
+const main = () => {
+  const cb = () => {
     const title = document.head.getElementsByTagName("title")[0]?.textContent;
     if (!title || !isUserProfileTitle(title)) {
       return;
     }
     console.log("突破", title);
 
-    const descriptionElm = await cronGetElement();
+    const descriptionElm = getDescriptionElement();
     console.log("await", descriptionElm);
     if (!descriptionElm) {
       console.error("not found user profile area.");
@@ -82,6 +55,7 @@ const main = async () => {
     const reactElm = document.createElement("div");
     reactElm.setAttribute("id", "user-memo");
     descriptionElm.appendChild(reactElm);
+
   };
 
   observeTitleTag(cb);
