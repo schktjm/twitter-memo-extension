@@ -1,4 +1,6 @@
 import { useMutationObserver } from "./lib/useMutationObserver";
+import { h, render } from "preact";
+import { App } from "./App";
 
 console.log("on twitter");
 
@@ -56,6 +58,7 @@ const main = () => {
     reactElm.setAttribute("id", "user-memo");
     descriptionElm.appendChild(reactElm);
 
+    render(<App />, reactElm);
   };
 
   observeTitleTag(cb);
