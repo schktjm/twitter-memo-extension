@@ -1,0 +1,1 @@
+!function(){"use strict";console.log("on twitter");var e=document.head.getElementsByTagName("title");console.log(e[0])}();

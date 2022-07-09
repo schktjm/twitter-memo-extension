@@ -16,7 +16,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     console.log(`updated: ${tab.url}`);
     chrome.scripting.executeScript({
       target: { tabId: tabId },
-      files: ["./src/main.js"],
+      files: ["./dist/main.js"],
     });
   }
 });
