@@ -1,5 +1,17 @@
-import { h } from "preact";
+import { h, FunctionComponent } from "preact";
+import { css } from "@linaria/core";
+import { styled } from "@linaria/react";
 
-export const App = () => {
-  return <div>input要素</div>;
+const style = css`
+  color: red;
+  font-weight: 800;
+`;
+
+export const App: FunctionComponent = () => {
+  return (
+    <div className={style}>
+      input要素
+      <p>aaa</p>
+    </div>
+  );
 };
