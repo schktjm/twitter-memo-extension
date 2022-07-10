@@ -1,17 +1,39 @@
 import { h, FunctionComponent } from "preact";
-import { css } from "@linaria/core";
-import { styled } from "@linaria/react";
+import { useCallback, useRef, useState } from "preact/hooks";
 
-const style = css`
-  color: red;
-  font-weight: 800;
-`;
+import { Input } from "./components/Input";
+import { css } from "@linaria/core";
+import { Note } from "./components/Note";
 
 export const App: FunctionComponent = () => {
+  const text = useRef("");
+  const [editingText, setEditingText] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+
+  const submitText = useCallback(() => {
+    text.current = editingText;
+    setIsEditing(false);
+  }, [editingText]);
+
+  const cancel = useCallback(() => {
+    setEditingText(text.current);
+    setIsEditing(false);
+  }, [setEditingText]);
+
   return (
-    <div className={style}>
-      input要素
-      <p>aaa</p>
+    <div className={wrapper}>
+      {isEditing ? (
+        <Input
+          text={editingText}
+          onChangeText={(text) => setEditingText(text)}
+          onSubmit={submitText}
+          onCancel={cancel}
+        />
+      ) : (
+        <Note text={text.current} clickPencil={() => setIsEditing(true)} />
+      )}
     </div>
   );
 };
+
+const wrapper = css``;
