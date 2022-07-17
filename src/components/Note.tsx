@@ -1,6 +1,6 @@
 import { css } from "@linaria/core";
 import { h } from "preact";
-import { ButtonIcon } from "./ButtonIcon";
+import { PencilButton } from "./PencilButton";
 
 type Props = {
   text: string;
@@ -11,7 +11,7 @@ export const Note = ({ text, clickPencil }: Props) => {
   return (
     <div className={wrapper}>
       <div>{text}</div>
-      <ButtonIcon icon="pencil" onClick={clickPencil} />
+      <PencilButton onClick={clickPencil} />
     </div>
   );
 };

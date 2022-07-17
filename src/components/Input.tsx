@@ -1,6 +1,7 @@
 import { css } from "@linaria/core";
 import { h } from "preact";
-import { ButtonIcon } from "./ButtonIcon";
+import { CheckmarkButton } from "./CheckmarkButton";
+import { CloseButton } from "./CloseButton";
 
 type Props = {
   text: string;
@@ -26,8 +27,8 @@ export const Input = ({ text, onChangeText, onSubmit, onCancel }: Props) => {
         onInput={handleChangeText}
       />
       <div>
-        <ButtonIcon type="button" icon="checkmark" onClick={onSubmit} />
-        <ButtonIcon type="button" icon="close" onClick={onCancel} />
+        <CheckmarkButton onClick={onSubmit} />
+        <CloseButton onClick={onCancel} />
       </div>
     </div>
   );
