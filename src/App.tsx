@@ -1,9 +1,10 @@
 import { h, FunctionComponent } from "preact";
 import { useCallback, useRef, useState } from "preact/hooks";
+import { css } from "@linaria/core";
 
 import { Input } from "./components/Input";
-import { css } from "@linaria/core";
 import { Note } from "./components/Note";
+import "./global.css";
 
 export const App: FunctionComponent = () => {
   const text = useRef("");
