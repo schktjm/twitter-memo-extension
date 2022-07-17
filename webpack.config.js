@@ -1,6 +1,7 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
+  // develop だと eval を twitter で読み込めない
   mode: "production",
   entry: "./src/main.tsx",
   output: {
