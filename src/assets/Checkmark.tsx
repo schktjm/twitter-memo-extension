@@ -1,9 +1,9 @@
-import { css } from "@linaria/core";
 import { h } from "preact";
+import { SVGProps } from "../types";
 
-export const Checkmark = () => {
+export const Checkmark = (props: SVGProps) => {
   return (
-    <svg strokeWidth="2" viewBox="0 0 24 24" fill="none" className={style}>
+    <svg stroke-width="2" viewBox="0 0 24 24" fill="none" {...props}>
       <path
         d="M5 13L9 17L19 7"
         stroke="currentColor"
@@ -13,8 +13,3 @@ export const Checkmark = () => {
     </svg>
   );
 };
-
-const style = css`
-  width: 1.2rem;
-  height: 1.2rem;
-`;
