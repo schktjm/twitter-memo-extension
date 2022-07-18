@@ -20,7 +20,8 @@ export const App: FunctionComponent = () => {
   }, [textareaRef.current]);
 
   const submitText = useCallback(() => {
-    text.current = editingText;
+    text.current = editingText.trim();
+    setEditingText(text.current);
     setIsEditing(false);
   }, [editingText]);
 
