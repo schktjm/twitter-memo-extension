@@ -1,5 +1,6 @@
 import { css } from "@linaria/core";
 import { h } from "preact";
+import { forwardRef } from "preact/compat";
 import { CheckmarkButton } from "./CheckmarkButton";
 import { CloseButton } from "./CloseButton";
 
@@ -10,32 +11,79 @@ type Props = {
   onCancel: () => void;
 };
 
-export const Input = ({ text, onChangeText, onSubmit, onCancel }: Props) => {
-  // NOTE: https://github.com/preactjs/preact/issues/1930
-  const handleChangeText = (e: any) => {
-    const el = (e.currentTarget as HTMLInputElement).value;
-    onChangeText(el);
-  };
+export const Input = forwardRef<HTMLTextAreaElement, Props>(
+  ({ text, onChangeText, onSubmit, onCancel }, ref) => {
+    // NOTE: https://github.com/preactjs/preact/issues/1930
+    const handleChangeText = (e: any) => {
+      const el = (e.currentTarget as HTMLInputElement).value;
+      onChangeText(el);
+    };
 
-  return (
-    <div className={wrapper}>
-      <input
-        type="text"
-        value={text}
-        placeholder="hogehoge"
-        className={textStyle}
-        onInput={handleChangeText}
-      />
-      <div>
-        <CheckmarkButton onClick={onSubmit} />
-        <CloseButton onClick={onCancel} />
+    return (
+      <div className={wrapper}>
+        <div className={textareaWrapper}>
+          <div className={dummyText} aria-hidden="true">
+            {text + "\u200b"}
+          </div>
+          <textarea
+            ref={ref}
+            value={text}
+            onChange={handleChangeText}
+            rows={4}
+            cols={124}
+            className={textarea}
+          />
+        </div>
+        <div className={buttonWrapper}>
+          <CheckmarkButton onClick={onSubmit} />
+          <CloseButton onClick={onCancel} />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 const wrapper = css`
   display: flex;
+  flex-direction: column;
+`;
+
+const textareaWrapper = css`
+  position: relative;
+`;
+
+const dummyText = css`
+  visibility: hidden;
+  overflow: hidden;
+  min-height: 120px;
+  max-height: 480px;
+  padding: 12px;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+`;
+const textarea = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--color-grey-light);
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  resize: none;
+  font: inherit;
+  letter-spacing: inherit;
+`;
+
+const buttonWrapper = css`
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 16px;
+  margin-top: 6px;
 `;
 
 const textStyle = css`

@@ -8,8 +8,16 @@ import "./global.css";
 
 export const App: FunctionComponent = () => {
   const text = useRef("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [editingText, setEditingText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+
+  const setEditing = useCallback(() => {
+    setIsEditing(true);
+    setTimeout(() => {
+      textareaRef.current && textareaRef.current.focus();
+    }, 100);
+  }, [textareaRef.current]);
 
   const submitText = useCallback(() => {
     text.current = editingText;
@@ -23,18 +31,26 @@ export const App: FunctionComponent = () => {
 
   return (
     <div className={wrapper}>
-      {isEditing ? (
+      <div className={isEditing ? "" : hidden}>
         <Input
+          ref={textareaRef}
           text={editingText}
           onChangeText={(text) => setEditingText(text)}
           onSubmit={submitText}
           onCancel={cancel}
         />
-      ) : (
-        <Note text={text.current} clickPencil={() => setIsEditing(true)} />
-      )}
+      </div>
+      <div className={isEditing ? hidden : ""}>
+        <Note text={text.current} clickPencil={setEditing} />
+      </div>
     </div>
   );
 };
 
-const wrapper = css``;
+const wrapper = css`
+  margin-top: 12px;
+`;
+
+const hidden = css`
+  display: none;
+`;

@@ -23,7 +23,7 @@ const wrapper = css`
   justify-content: center;
   border-radius: 50%;
   cursor: pointer;
-  border: 1px solid var(--color-black);
+  border: 1px solid rgb(207, 217, 222);
   background-color: white;
   color: var(--color-black);
 
