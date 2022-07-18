@@ -1,16 +1,28 @@
 import { h, FunctionComponent } from "preact";
-import { useCallback, useRef, useState } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { css } from "@linaria/core";
 
 import { Input } from "./components/Input";
 import { Note } from "./components/Note";
 import "./global.css";
+import { useDatabase } from "./lib/useDatabase";
+import { getUserId } from "./lib/getUserId";
 
 export const App: FunctionComponent = () => {
+  const userId = getUserId();
   const text = useRef("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [editingText, setEditingText] = useState("");
+  const [editingText, setEditingText] = useState(text.current);
   const [isEditing, setIsEditing] = useState(false);
+  const { setMemo, getMemo } = useDatabase();
+
+  useEffect(() => {
+    const memo = getMemo(userId);
+    if (memo) {
+      text.current = memo;
+      setEditingText(text.current);
+    }
+  }, []);
 
   const setEditing = useCallback(() => {
     setIsEditing(true);
@@ -22,6 +34,7 @@ export const App: FunctionComponent = () => {
   const submitText = useCallback(() => {
     text.current = editingText.trim();
     setEditingText(text.current);
+    setMemo(userId, text.current);
     setIsEditing(false);
   }, [editingText]);
 
