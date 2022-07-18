@@ -15,8 +15,20 @@ export const Input = forwardRef<HTMLTextAreaElement, Props>(
   ({ text, onChangeText, onSubmit, onCancel }, ref) => {
     // NOTE: https://github.com/preactjs/preact/issues/1930
     const handleChangeText = (e: any) => {
-      const el = (e.currentTarget as HTMLInputElement).value;
+      const el = (e.currentTarget as HTMLTextAreaElement).value;
       onChangeText(el);
+    };
+
+    const handleKeydownSubmit = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+        onSubmit();
+      }
+
+      if (e.key === "Escape") {
+        // onCancel が呼ばれずに focus が外れちゃう
+        e.preventDefault();
+        onCancel();
+      }
     };
 
     return (
@@ -32,6 +44,7 @@ export const Input = forwardRef<HTMLTextAreaElement, Props>(
             rows={4}
             cols={124}
             className={textarea}
+            onKeyDown={handleKeydownSubmit}
           />
         </div>
         <div className={buttonWrapper}>
@@ -70,6 +83,7 @@ const textarea = css`
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+  color: var(--color-black);
   background-color: var(--color-grey-light);
   border: none;
   border-radius: 8px;
